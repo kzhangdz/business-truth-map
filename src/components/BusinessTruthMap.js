@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import esriConfig from "@arcgis/core/config";
 import CustomContent from "@arcgis/core/popup/content/CustomContent";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
@@ -6,11 +6,13 @@ import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import PopupTemplate from "@arcgis/core/PopupTemplate";
 import Query from "@arcgis/core/rest/support/Query";
+import MapContext from "./MapContext";
 //import { arcgisToGeoJSON } from '@esri/arcgis-to-geojson-utils';
 
 const BusinessTruthMap = () => {
 
     const mapRef = useRef(); // id for the map
+    const {setAddressID} = useContext(MapContext)
 
     useEffect(() => {
         esriConfig.apiKey = "AAPK62daac607e3a40e58c9cb76c8412103bLVg4fLW_SF3o2d5z95L5PNemEaRIz6Kxk1K8GNpmykKl84zBrSADiPaiT0LRKbLK";
@@ -32,13 +34,7 @@ const BusinessTruthMap = () => {
           map: map,
           center: [-83.0458, 42.3314],
           zoom: 13, // scale: 72223.819286
-          container: mapRef.current,
-          constraints: {
-            snapToZoom: false
-          },
-          ui: {
-            components: ['attribution', 'zoom', 'compass'],
-          },
+          container: mapRef.current
         });
 
         /*
@@ -64,39 +60,33 @@ const BusinessTruthMap = () => {
 
         // once the view is set up, add the widgets to the page
         view.when(() => {
-          // widget that queries for address = data
-          const addressPointsWidget = new CustomContent({
-            outFields: ["*"],
-            creator: (event) => {
-              console.log(event)
-
-              /*
-              const queryObject = new Query({
-                outFields: ["*"],
-                where: "1=1"
-              });
-
-              featureLayer.queryFeatures(queryObject)
-              .then(function(response){
-                // process the results
-                console.log(response)
-
-                const featureAttributes = result.features.map((item, i) => {
-                    return item.attributes;
-                  });
-              });
-              */
-            }
-          })
 
           // Create the PopupTemplate and place the panel inside
           const template = new PopupTemplate({
             outFields: ["*"],
-            title: "State: {state_name}", // "state_name is one of the field names. try one of yours"
-            content: [addressPointsWidget]
+            title: "{addr_id}"
           });
 
           featureLayer.popupTemplate = template;
+        });
+        // Get the screen point from the view's click event
+        view.on("click", function (event) {
+          // Search for graphics at the clicked location. View events can be used
+          // as screen locations as they expose an x,y coordinate that conforms
+          // to the ScreenPoint definition.
+          view.hitTest(event).then(function (response) {
+            // only get the graphics returned from myLayer
+            const graphicHits = response.results?.filter(
+              (hitResult) => hitResult.type === "graphic" && hitResult.graphic.layer === featureLayer
+            );
+            if (graphicHits?.length > 0) {
+              // do something with the myLayer features returned from hittest
+              graphicHits.forEach((graphicHit) => {
+                setAddressID(graphicHit.graphic.attributes.addr_id);
+                return;
+              });
+            }
+          });
         });
 
         // clean up
@@ -107,7 +97,7 @@ const BusinessTruthMap = () => {
     return (
         <div style={
           {
-            height: 600
+            height: "100%"
           }
         } ref={mapRef} />
     );
