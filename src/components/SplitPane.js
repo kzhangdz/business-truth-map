@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import SplitPaneContext from "./SplitPaneContext";
 import MapContext from "./MapContext";
-import BusinessTruthMap from "./BusinessTruthMap";
 
 const SplitPane = ({ children, ...props }) => {
     const [clientHeight, setClientHeight] = useState(null);
@@ -87,9 +86,7 @@ export const SplitPaneRight = (props) => {
     }, [clientHeight]);
 
     return (
-        <div {...props} className="split-pane-right" ref={topRef}>
-            <BusinessTruthMap />
-        </div>
+        <div {...props} className="split-pane-right" ref={topRef} />
     );
 };
 
@@ -98,7 +95,6 @@ export const SplitPaneBottom = (props) => {
 
     return (
         <div {...props} className="split-pane-bottom">
-            Current <b>Address id</b>: {addressId}
         </div>
     );
 };
@@ -121,12 +117,8 @@ export const SplitPaneLeft = (props) => {
 };
 
 export const SplitPaneTop = (props) => {
-    const { addressId } = useContext(MapContext);
-
     return (
-        <div {...props} className="split-pane-top">
-            Current <b>Address id</b>: {addressId}
-        </div>
+        <div {...props} className="split-pane-top" />
     );
 };
 

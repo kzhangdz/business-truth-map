@@ -20,13 +20,13 @@ code {
 
 
 .App {
-  font-family: "Segoe UI", sans-serif;
+  font-family: 'Montserrat',sans-serif,Helvetica,Arial;
   font-size: 1.2rem;
   text-align: center;
 }
 
 .split-pane-col {
-  width: 100vw;
+  width: inherit;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -47,33 +47,21 @@ code {
   overflow: hidden;
 }
 
-.split-pane-right {
-  background-color: #fff;
-  background-image: linear-gradient(
-      90deg,
-      transparent 79px,
-      #abced4 79px,
-      #abced4 81px,
-      transparent 81px
-    ),
-    linear-gradient(#eee 0.1em, transparent 0.1em);
-  background-size: 100% 1.2em;
-}
-
 .split-pane-top,
 .split-pane-bottom {
-  background-color: #ccc;
+  background-color: #f2f2f2;
   text-align: left;
-  padding: 2%;
+  padding: 1%;
+  overflow-y: auto;
 }
 
 .separator-col {
-  border: 5px solid black;
+  border: 5px solid #18252A;
   cursor: col-resize;
 }
 
 .separator-row {
-  border: 5px solid black;
+  border: 5px solid #18252A;
   cursor: row-resize;
 }
 
@@ -94,4 +82,68 @@ ul a {
 
 ul a:hover {
   color: black;
+}
+
+.dataset-list-item {
+  font-weight: bold;
+  padding: 10px 0px 10px 10px;
+  margin: 5px 0px 5px 0px;
+  text-align: left;
+  color:#18252A;
+  border:1px solid #18252A;
+  border-radius: 10px;
+  background:#9FD5B3;
+  box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
+  cursor:pointer;
+  vertical-align:middle;
+  max-width: 100%;
+}
+
+.dataset-list-item:hover {
+  color:#f2f2f2;
+  background:#004445;
+  box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+}
+
+#dataset-results-header  {
+  font-weight: bolder;
+  font-size: x-large;
+  padding: 0px 0px 10px 0px;
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+
+th, td {
+    padding: 12px 15px;
+}
+
+tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
 }
